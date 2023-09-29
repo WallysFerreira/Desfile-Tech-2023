@@ -1,6 +1,13 @@
 # Pontes interativas
 Códigos e anotações das pontes que irão decorar a passarela do desfile.  
 
+## Ideias
+
+| Ação                          | Resultado                                   | Como                                                                                      |
+|-------------------------------|---------------------------------------------|-------------------------------------------------------------------------------------------|
+| Modelo pisa na linha da ponte | A ponte sobe e desce devagar                | Sensor de proximidade percebe o pé da modelo e dispara a função de subir e descer a ponte |
+| Sinal infravermelho é enviado | Reage conforme a tabela de código IR e ação | Receptor IR recebe o sinal infravermelho e passa o código para um switch                  |
+
 ## Convenções
 
 ### O que está conectado em que porta
