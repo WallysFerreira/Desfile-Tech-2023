@@ -1,4 +1,13 @@
 # Desfile Tech - Rec'n'Play 2023
 
 Códigos e anotações da equipe de arduino  
-A equipe está dividade em equipe de pontes e equipe da roupa
+
+## Equipes
+Roupa - Lilypad e sensor de batimento cardiaco
+- Ane
+- Rafael
+
+Pontes
+- Wallys
+- Scarllet
+- Brendo
