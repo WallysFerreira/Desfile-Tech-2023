@@ -10,7 +10,8 @@ void setup() {
 }
 
 void loop() {
-  IrSender.sendNEC(1, 32);
+  // Formato: Address, Command, Repeats
+  IrSender.sendNEC(0x1, 0x1, 1);
   
   if (IrReceiver.decode()) {  
     IrReceiver.printIRResultShort(&Serial);
