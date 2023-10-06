@@ -3,15 +3,24 @@
 - 8 Arduinos (receptores) recebem sinal infravermelho e controlam os motores e luzes baseado nesses sinais (ver tabela abaixo).
 - 1 Arduino (emissor) monitora dois sensores ultrassonicos e faz requisição em uma API e envia sinal infravermelho baseado nas informações.
 
+
+A ideia é que o arduino emissor controle os arduinos de cada linha enviando um único comando onde ele vai dizer: 
+- O que quer controlar (luz ou motor) 
+- O que quer colocar (Cor da luz no caso da luz) 
+- Qual motor ou luz quer controlar (numero dele na pirâmide de cima para baixo)
+- Como quer controlar (Para luz: Blink, fade ou cor fixa. Para motor: Direto ou cascata)
+- Ângulo (para motor), intensidade (para LED em cor fixa) ou tempo (para LED em fade ou blink).
+
 ## Ideias
 
 | Ação                          | Resultado                                   | Como                                                                                      |
 |-------------------------------|---------------------------------------------|-------------------------------------------------------------------------------------------|
-| Modelo passa pela piramide | As pontes se viram para a direção que a modelo está indo | Sensor de proximidade percebe o pé da modelo e arduino emissor envia sinal infravermelho fazendo com que os receptores  |
+| Modelo passa pela piramide | As pontes se viram para a direção que a modelo está indo | Sensor de proximidade percebe o pé da modelo e arduino emissor envia sinal infravermelho |
 | O público reage à apresentação | As cores das duas reações mais votadas aparecem em cada piramide | Arduino puxa os resultados da aplicação web por uma API |
 
 ## Convenções
 
+<!--
 ### Códigos IR
 
 | Ação                                        | Código enviado | Resultado esperado                                      |
