@@ -16,15 +16,15 @@
 
 | Ação                                        | Código enviado | Resultado esperado                                      |
 |---------------------------------------------|----------------|---------------------------------------------------------|
-| Passou pelo primeiro sensor                 | A definir      | Os motores das duas pirâmides mexem pra direita (0º)    |
-| Passou pelo segundo sensor na segunda vez   | A definir      | Os motores das duas pirâmides mexem pra esquerda (180º) |
-| Recebeu reação vermelha como primeiro lugar | A definir      | Primeira pirâmide fica da cor vermelha                  |
-| Recebeu reação vermelha como segundo lugar  | A definir      | Segunda pirâmide fica da cor vermelha                   |
-| Recebeu reação azul como primeiro lugar     | A definir      | Primeira pirâmide fica da cor azul                      |
-| Recebeu reação azul como segundo lugar      | A definir      | Segunda pirâmide fica da cor azul                       |
-| Recebeu reação verde como primeiro lugar    | A definir      | Primeira pirâmide fica da cor verde                     |
-| Recebeu reação verde como segundo lugar     | A definir      | Segunda pirâmide fica da cor verde                      |
-| Quando a votação acabar                     | A definir      | Mistura as cores das duas pirâmides                     |
+| Passou pelo primeiro sensor                 | 0xFFFF01       | Os motores das duas pirâmides mexem pra direita (0º)    |
+| Passou pelo segundo sensor na segunda vez   | 0xFFFF02       | Os motores das duas pirâmides mexem pra esquerda (180º) |
+| Recebeu reação vermelha como primeiro lugar | 0xFFFF03       | Primeira pirâmide fica da cor vermelha                  |
+| Recebeu reação vermelha como segundo lugar  | 0xFFFF04       | Segunda pirâmide fica da cor vermelha                   |
+| Recebeu reação azul como primeiro lugar     | 0xFFFF05       | Primeira pirâmide fica da cor azul                      |
+| Recebeu reação azul como segundo lugar      | 0xFFFF06       | Segunda pirâmide fica da cor azul                       |
+| Recebeu reação verde como primeiro lugar    | 0xFFFF07       | Primeira pirâmide fica da cor verde                     |
+| Recebeu reação verde como segundo lugar     | 0xFFFF08       | Segunda pirâmide fica da cor verde                      |
+| Quando a votação acabar                     | 0xFFFF09       | Mistura as cores das duas pirâmides                     |
 
 <!--
 ### O que está conectado em que porta
