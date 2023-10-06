@@ -3,11 +3,15 @@
 Códigos e anotações da equipe de arduino  
 
 ## Equipes
-Roupa - Lilypad e sensor de batimento cardiaco
-- Ane
-- Rafael
+Roupa - Lilypad 
+- Emesson Silva
+- Wanessa Souza
+- Tairone Oliveira
+- Naiury Santos
 
-Pontes
-- Wallys
-- Scarllet
+Pontes - Pirâmides
+- Wallys Ferreira
+- Scarllet Santos
 - Brendo
+- Rafael Barreto
+- Ane
