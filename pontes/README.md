@@ -11,6 +11,18 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 - Como quer controlar (Para luz: Blink, fade ou cor fixa. Para motor: Direto ou cascata)
 - Ângulo (para motor), intensidade (para LED em cor fixa) ou tempo (para LED em fade ou blink).
 
+Usando I2C, cada arduino terá um endereço. E na mensagem I2C vamos mandar em formato de array de bytes:
+- Qual motor ou luz queremos controlar (Para motor começa com 0x01 e vai até 0x04, para luz começa com 0xA1 e vai até 0xA4)
+- Quantidade de vermelho (luz) ou angulo inicial (motor)
+- Quantidade de verde (luz) ou angulo final (motor)
+- Quantidade de azul (luz) ou velocidade (motor)
+
+Então se quisermos que o motor 2 de uma linha faça um movimento começando no angulo 0 e indo até 180 graus na velocidade 2, enviariamos o array [0x02, 0x00, 0xB4, 0x02]
+
+Para facilitar, os angulos de 0, 90 e 180 graus podem ser enviados usando os codigos 0xF1, 0xF2 e 0xF3 respectivamente.
+
+<!--
+Usando IR
 O formato seria:
 - address: Endereço da ponte que queremos controlar
 - command: Comando para dizer se queremos controlar o motor ou qual perna do led RGB e como (blink, fade ou cor fixa)
@@ -19,6 +31,7 @@ O formato seria:
 Por exemplo, seguindo a tabela de comandos, se quisermos mexer o motor 5 da pirâmide da esquerda para direita na velocidade 2 enviariamos:
 
 address: 5, command: 0x01, data: 0x000002
+-->
 
 ## Ideias
 
@@ -43,6 +56,7 @@ Nas pirâmides cada ponte é numerada de cima para baixo, da esquerda para direi
 | Vermelho, verde, azul (3 se houver) | 12, 13, 14 |
 | Vermelho, verde, azul (4 se houver) | 15, 16, 17 |
 
+<!--
 ### Comandos
 | Command | Resultado                            |
 |---------|--------------------------------------|
