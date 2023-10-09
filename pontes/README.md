@@ -19,7 +19,8 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 | O público reage à apresentação | As cores das duas reações mais votadas aparecem em cada piramide | Arduino puxa os resultados da aplicação web por uma API |
 
 ## Convenções
-### Onde conectar as coisas no receptor
+### Conexões arduino receptor
+
 | Componente                         | Porta |
 |------------------------------------|-------|
 | Motor 1 (da esquerda para direita) | 5     |
@@ -30,8 +31,6 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 | Vermelho                           | 1     |
 | Verde                              | 2     |
 | Azul                               | 3     |
-
-
 
 <!--
 ### Códigos IR
