@@ -71,16 +71,16 @@ void eventoReceber(int _) {
             mexerMotor(m4, parametro1, parametro2, parametro3);
             break;
         case 0xA1:
-            mudarLuz([VERMELHO1, VERDE1, AZUL1], parametro1, parametro2, parametro3);
+            mudarLuz(VERMELHO1, VERDE1, AZUL1, parametro1, parametro2, parametro3);
             break;
         case 0xA2:
-            mudarLuz([VERMELHO2, VERDE2, AZUL2], parametro1, parametro2, parametro3);
+            mudarLuz(VERMELHO2, VERDE2, AZUL2, parametro1, parametro2, parametro3);
             break;
         case 0xA3:
-            mudarLuz([VERMELHO3, VERDE3, AZUL3], parametro1, parametro2, parametro3);
+            mudarLuz(VERMELHO3, VERDE3, AZUL3, parametro1, parametro2, parametro3);
             break;
         case 0xA4:
-            mudarLuz([VERMELHO4, VERDE4, AZUL4], parametro1, parametro2, parametro3);
+            mudarLuz(VERMELHO4, VERDE4, AZUL4, parametro1, parametro2, parametro3);
             break;
     }
 }
