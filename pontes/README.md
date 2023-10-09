@@ -11,6 +11,11 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 - Como quer controlar (Para luz: Blink, fade ou cor fixa. Para motor: Direto ou cascata)
 - Ângulo (para motor), intensidade (para LED em cor fixa) ou tempo (para LED em fade ou blink).
 
+O formato seria:
+- address: Endereço da ponte que queremos controlar
+- command: Comando para dizer se queremos controlar o motor ou qual perna do led RGB e como (blink, fade ou cor fixa)
+- data: Dados para dizer o ângulo, intensidade ou tempo
+
 ## Ideias
 
 | Ação                          | Resultado                                   | Como                                                                                      |
