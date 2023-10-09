@@ -18,7 +18,10 @@ void loop() {
 void vermelhoPiramide1() {
     for (int i = 0; i < PIR1.length(); i++) {
         Wire.beginTransmission(PIR1[i]);
-        Wire.write([0xAA, 0xFF, 0x00, 0x00]);
+        Wire.write([0xA1, 0xFF, 0x00, 0x00]);
+        Wire.write([0xA2, 0xFF, 0x00, 0x00]);
+        Wire.write([0xA3, 0xFF, 0x00, 0x00]);
+        Wire.write([0xA4, 0xFF, 0x00, 0x00]);
         Wire.endTransmission();
     }
 }
@@ -26,7 +29,7 @@ void vermelhoPiramide1() {
 void motorEsquerdaParaDireitaPiramide1() {
     for (int i = 0; i < PIR1.length(); i++) {
         Wire.beginTransmission(PIR1[i]);
-        Wire.write([0xAF, 0x00, 0xFF, 0x02]);
+        Wire.write([0x01, 0xF1, 0xF3, 0x02]);
         Wire.endTransmission();
     }
 }
