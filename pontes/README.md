@@ -39,6 +39,20 @@ Nas pirâmides cada ponte é numerada de cima para baixo, da esquerda para direi
 | Vermelho, verde, azul (3 se houver) | 12, 13, 14 |
 | Vermelho, verde, azul (4 se houver) | 15, 16, 17 |
 
+### Comandos
+| Command | Resultado                            |
+|---------|--------------------------------------|
+| 0x01    | Mudar motor da esquerda para direita |
+| 0x02    | Mudar motor da direita para esquerda |
+| 0x03    | Mudar motor do meio para direita     |
+| 0x04    | Mudar motor do meio para esquerda    |
+| 0x10    | Vermelho fixo                        |
+| 0x11    | Verde fixo                           |
+| 0x12    | Azul fixo                            |
+| 0x13    | Vermelho + Verde fixo                |
+| 0x14    | Verde + Azul fixo                    |
+| 0x15    | Vermelho + Azul fixo                 |
+
 <!--
 ### Códigos IR
 
