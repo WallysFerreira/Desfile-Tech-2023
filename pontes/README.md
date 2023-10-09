@@ -19,6 +19,8 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 | O público reage à apresentação | As cores das duas reações mais votadas aparecem em cada piramide | Arduino puxa os resultados da aplicação web por uma API |
 
 ## Convenções
+Nas pirâmides cada ponte é numerada de cima para baixo, da esquerda para direita. O endereço das pontes da pirâmide da esquerda vão de 1 até 10 e as da direita vão de 11 até 20.
+
 ### Conexões arduino receptor
 | Componente                          | Porta      |
 |-------------------------------------|------------|
