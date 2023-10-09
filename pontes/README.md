@@ -20,17 +20,17 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 
 ## Convenções
 ### Conexões arduino receptor
-
-| Componente                         | Porta |
-|------------------------------------|-------|
-| Motor 1 (da esquerda para direita) | 5     |
-| Motor 2 (se houver)                | 6     |
-| Motor 3 (se houver)                | 7     |
-| Motor 4 (se houver)                | 8     |
-| Receptor IR                        | 4     |
-| Vermelho                           | 1     |
-| Verde                              | 2     |
-| Azul                               | 3     |
+| Componente                          | Porta      |
+|-------------------------------------|------------|
+| Motor 1 (da esquerda para direita)  | 5          |
+| Motor 2 (se houver)                 | 6          |
+| Motor 3 (se houver)                 | 7          |
+| Motor 4 (se houver)                 | 8          |
+| Receptor IR                         | 4          |
+| Vermelho, verde, azul (1)           | 1, 2, 3    |
+| Vermelho, verde, azul (2 se houver) | 9, 10, 11  |
+| Vermelho, verde, azul (3 se houver) | 12, 13, 14 |
+| Vermelho, verde, azul (4 se houver) | 15, 16, 17 |
 
 <!--
 ### Códigos IR
