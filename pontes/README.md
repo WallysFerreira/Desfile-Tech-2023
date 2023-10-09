@@ -16,6 +16,10 @@ O formato seria:
 - command: Comando para dizer se queremos controlar o motor ou qual perna do led RGB e como (blink, fade ou cor fixa)
 - data: Dados para dizer o ângulo, intensidade ou tempo
 
+Por exemplo, seguindo a tabela de comandos, se quisermos mexer o motor 5 da pirâmide da esquerda para direita na velocidade 2 enviariamos:
+
+address: 5, command: 0x01, data: 0x000002
+
 ## Ideias
 
 | Ação                          | Resultado                                   | Como                                                                                      |
