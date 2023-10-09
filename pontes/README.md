@@ -11,6 +11,15 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 - Como quer controlar (Para luz: Blink, fade ou cor fixa. Para motor: Direto ou cascata)
 - Ângulo (para motor), intensidade (para LED em cor fixa) ou tempo (para LED em fade ou blink).
 
+O formato seria:
+- address: Endereço da ponte que queremos controlar
+- command: Comando para dizer se queremos controlar o motor ou qual perna do led RGB e como (blink, fade ou cor fixa)
+- data: Dados para dizer o ângulo, intensidade ou tempo
+
+Por exemplo, seguindo a tabela de comandos, se quisermos mexer o motor 5 da pirâmide da esquerda para direita na velocidade 2 enviariamos:
+
+address: 5, command: 0x01, data: 0x000002
+
 ## Ideias
 
 | Ação                          | Resultado                                   | Como                                                                                      |
@@ -19,6 +28,34 @@ A ideia é que o arduino emissor controle os arduinos de cada linha enviando um 
 | O público reage à apresentação | As cores das duas reações mais votadas aparecem em cada piramide | Arduino puxa os resultados da aplicação web por uma API |
 
 ## Convenções
+Nas pirâmides cada ponte é numerada de cima para baixo, da esquerda para direita. O endereço das pontes da pirâmide da esquerda vão de 1 até 10 e as da direita vão de 11 até 20.
+
+### Conexões arduino receptor
+| Componente                          | Porta      |
+|-------------------------------------|------------|
+| Motor 1 (da esquerda para direita)  | 5          |
+| Motor 2 (se houver)                 | 6          |
+| Motor 3 (se houver)                 | 7          |
+| Motor 4 (se houver)                 | 8          |
+| Receptor IR                         | 4          |
+| Vermelho, verde, azul (1)           | 1, 2, 3    |
+| Vermelho, verde, azul (2 se houver) | 9, 10, 11  |
+| Vermelho, verde, azul (3 se houver) | 12, 13, 14 |
+| Vermelho, verde, azul (4 se houver) | 15, 16, 17 |
+
+### Comandos
+| Command | Resultado                            |
+|---------|--------------------------------------|
+| 0x01    | Mudar motor da esquerda para direita |
+| 0x02    | Mudar motor da direita para esquerda |
+| 0x03    | Mudar motor do meio para direita     |
+| 0x04    | Mudar motor do meio para esquerda    |
+| 0x10    | Vermelho fixo                        |
+| 0x11    | Verde fixo                           |
+| 0x12    | Azul fixo                            |
+| 0x13    | Vermelho + Verde fixo                |
+| 0x14    | Verde + Azul fixo                    |
+| 0x15    | Vermelho + Azul fixo                 |
 
 <!--
 ### Códigos IR
