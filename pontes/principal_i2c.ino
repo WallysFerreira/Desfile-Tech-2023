@@ -5,7 +5,7 @@
 #define PIR_1_LIN_3 0x03
 #define PIR_1_LIN_4 0x04
 
-byte PIR1 = [PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4];
+byte PIR1[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
 
 void setup() {
     Serial.begin(9600);
