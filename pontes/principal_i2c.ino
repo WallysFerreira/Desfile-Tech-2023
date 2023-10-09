@@ -4,14 +4,8 @@
 #define PIR_1_LIN_2 0x02
 #define PIR_1_LIN_3 0x03
 #define PIR_1_LIN_4 0x04
-#define PIR_1_LIN_5 0x05
-#define PIR_1_LIN_6 0x06
-#define PIR_1_LIN_7 0x07
-#define PIR_1_LIN_8 0x08
-#define PIR_1_LIN_9 0x09
-#define PIR_1_LIN_10 0x0A
 
-byte PIR1 = [PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4, PIR_1_LIN_5, PIR_1_LIN_6, PIR_1_LIN_7, PIR_1_LIN_8, PIR_1_LIN_9, PIR_1_LIN_10];
+byte PIR1 = [PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4];
 
 void setup() {
     Serial.begin(9600);
