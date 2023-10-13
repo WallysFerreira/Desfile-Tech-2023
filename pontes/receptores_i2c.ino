@@ -70,6 +70,12 @@ void eventoReceber(int _) {
         case 0x04:
             mexerMotor(m4, parametro1, parametro2, parametro3);
             break;
+        case 0x05:
+            mexerMotor(m1, parametro1, parametro2, parametro3);
+            mexerMotor(m2, parametro1, parametro2, parametro3);
+            mexerMotor(m3, parametro1, parametro2, parametro3);
+            mexerMotor(m4, parametro1, parametro2, parametro3);
+            break;
         case 0xA1:
             mudarLuz(VERMELHO1, VERDE1, AZUL1, parametro1, parametro2, parametro3);
             break;
@@ -80,6 +86,12 @@ void eventoReceber(int _) {
             mudarLuz(VERMELHO3, VERDE3, AZUL3, parametro1, parametro2, parametro3);
             break;
         case 0xA4:
+            mudarLuz(VERMELHO4, VERDE4, AZUL4, parametro1, parametro2, parametro3);
+            break;
+        case 0xA5:
+            mudarLuz(VERMELHO1, VERDE1, AZUL1, parametro1, parametro2, parametro3);
+            mudarLuz(VERMELHO2, VERDE2, AZUL2, parametro1, parametro2, parametro3);
+            mudarLuz(VERMELHO3, VERDE3, AZUL3, parametro1, parametro2, parametro3);
             mudarLuz(VERMELHO4, VERDE4, AZUL4, parametro1, parametro2, parametro3);
             break;
     }
