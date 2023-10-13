@@ -20,7 +20,7 @@ HC_SR04 sensorEntrada(PIN_TRIGGER1, PIN_ECHO1);
 HC_SR04 sensorFinal(PIN_TRIGGER2, PIN_ECHO2); 
 
 bool passouPeloFinal = false;
-bool passouPeloComeco = false;
+bool passouPelaEntrada = false;
 
 void setup() {
     Serial.begin(9600);
@@ -32,7 +32,7 @@ void loop() {
 
     // Checar o sensor ultrassonico do começo
     if (sensorEntrada.distance() < 20) {
-        if (!passouPeloComeco) {
+        if (!passouPelaEntrada) {
             Serial.println("Passou pelo começo pela primeira vez");
             mexerMotoresPiramide1(ESQUERDA, PIRAMIDE);
         } else {
@@ -40,10 +40,10 @@ void loop() {
             mexerMotoresPiramide1(DIREITA, ESQUERDA);
         }
 
-        passouPeloComeco = !passouPeloComeco;
+        passouPelaEntrada = !passouPelaEntrada;
     }
 
-    // Checar o sensor ultrassonico do final
+    // Checar o sensor ultrassonico do anguloFinal
     if (sensorFinal.distance() < 20) {
         if (!passouPeloFinal) {
             Serial.println("Passou pelo final pela primeira vez");
@@ -68,18 +68,18 @@ void vermelhoPiramide1() {
     }
 }
 
-void mexerMotoresPiramide1(int comeco, int final) {
+void mexerMotoresPiramide1(int anguloComeco, int anguloFinal) {
     for (int i = 0; i < PIR1.length(); i++) {
         Wire.beginTransmission(PIR1[i]);
-        Wire.write([0x01, comeco, final, 0x02]);
+        Wire.write([0x01, anguloComeco, anguloFinal, 0x02]);
         Wire.endTransmission();
     }
 }
 
-void mexerMotoresPiramide2(int comeco, int final) {
+void mexerMotoresPiramide2(int anguloComeco, int anguloFinal) {
     for (int i = 0; i < PIR2.length(); i++) {
         Wire.beginTransmission(PIR2[i]);
-        Wire.write([0x01, comeco, final, 0x02]);
+        Wire.write([0x01, anguloComeco, anguloFinal, 0x02]);
         Wire.endTransmission();
     }
 }
