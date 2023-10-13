@@ -16,6 +16,8 @@
 #define DIREITA 0xF1
 
 byte PIR1[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
+byte MOTORES[] = {0x01, 0x02, 0x03, 0x04};
+byte LEDS[] = {0xA1, 0xA2, 0xA3, 0xA4};
 
 HC_SR04 sensorEntrada(PIN_TRIGGER1, PIN_ECHO1);
 HC_SR04 sensorFinal(PIN_TRIGGER2, PIN_ECHO2); 
