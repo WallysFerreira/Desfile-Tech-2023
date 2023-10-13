@@ -16,6 +16,7 @@
 #define DIREITA 0xF1
 
 byte PIR1[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
+
 HC_SR04 sensorEntrada(PIN_TRIGGER1, PIN_ECHO1);
 HC_SR04 sensorFinal(PIN_TRIGGER2, PIN_ECHO2); 
 
@@ -60,10 +61,7 @@ void loop() {
 void vermelhoPiramide1() {
     for (int i = 0; i < PIR1.length(); i++) {
         Wire.beginTransmission(PIR1[i]);
-        Wire.write([0xA1, 0xFF, 0x00, 0x00]);
-        Wire.write([0xA2, 0xFF, 0x00, 0x00]);
-        Wire.write([0xA3, 0xFF, 0x00, 0x00]);
-        Wire.write([0xA4, 0xFF, 0x00, 0x00]);
+        Wire.write([0xA5, 0xFF, 0x00, 0x00]);
         Wire.endTransmission();
     }
 }
@@ -71,7 +69,7 @@ void vermelhoPiramide1() {
 void mexerMotoresPiramide1(int anguloComeco, int anguloFinal) {
     for (int i = 0; i < PIR1.length(); i++) {
         Wire.beginTransmission(PIR1[i]);
-        Wire.write([0x01, anguloComeco, anguloFinal, 0x02]);
+        Wire.write([0x05, anguloComeco, anguloFinal, 0x02]);
         Wire.endTransmission();
     }
 }
@@ -79,7 +77,7 @@ void mexerMotoresPiramide1(int anguloComeco, int anguloFinal) {
 void mexerMotoresPiramide2(int anguloComeco, int anguloFinal) {
     for (int i = 0; i < PIR2.length(); i++) {
         Wire.beginTransmission(PIR2[i]);
-        Wire.write([0x01, anguloComeco, anguloFinal, 0x02]);
+        Wire.write([0x05, anguloComeco, anguloFinal, 0x02]);
         Wire.endTransmission();
     }
 }
