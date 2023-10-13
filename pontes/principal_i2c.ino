@@ -50,10 +50,10 @@ void loop() {
 
     if (distancia1 < 20) {
         if (!passouPelaEntrada) {
-            Serial.println("Passou pelo entrada pela primeira vez");
+            Serial.println("Passou pela entrada pela primeira vez");
             mexerMotoresPiramide1(ESQUERDA, DIREITA);
         } else {
-            Serial.println("Passou pelo entrada pela segunda vez");
+            Serial.println("Passou pela entrada pela segunda vez");
             mexerMotoresPiramide1(DIREITA, ESQUERDA);
         }
 
