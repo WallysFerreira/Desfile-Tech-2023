@@ -61,25 +61,34 @@ void loop() {
 }
 
 void vermelhoPiramide1() {
+    byte[] data = {0xA5, 0xFF, 0x00, 0x00};
     for (int i = 0; i < PIR1.length(); i++) {
         Wire.beginTransmission(PIR1[i]);
-        Wire.write([0xA5, 0xFF, 0x00, 0x00]);
+        for (int i = 0; i < data.length; i++) {
+            Wire.write(data[i]);
+        }
         Wire.endTransmission();
     }
 }
 
 void mexerMotoresPiramide1(int anguloComeco, int anguloFinal) {
+    byte[] data = {0x05, anguloComeco, anguloFinal, 0x02};
     for (int i = 0; i < PIR1.length(); i++) {
         Wire.beginTransmission(PIR1[i]);
-        Wire.write([0x05, anguloComeco, anguloFinal, 0x02]);
+        for (int i = 0; i < data.length; i++) {
+            Wire.write(data[i]);
+        }
         Wire.endTransmission();
     }
 }
 
 void mexerMotoresPiramide2(int anguloComeco, int anguloFinal) {
+    byte[] data = {0x05, anguloComeco, anguloFinal, 0x02};
     for (int i = 0; i < PIR2.length(); i++) {
         Wire.beginTransmission(PIR2[i]);
-        Wire.write([0x05, anguloComeco, anguloFinal, 0x02]);
+        for (int i = 0; i < data.length; i++) {
+            Wire.write(data[i]);
+        }
         Wire.endTransmission();
     }
 }
