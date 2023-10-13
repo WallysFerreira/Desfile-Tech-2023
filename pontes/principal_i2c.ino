@@ -1,11 +1,22 @@
 #include <Wire.h>
+#include <Ultrasonic.h>
 
 #define PIR_1_LIN_1 0x01
 #define PIR_1_LIN_2 0x02
 #define PIR_1_LIN_3 0x03
 #define PIR_1_LIN_4 0x04
 
+#define PIN_ECHO1 
+#define PIN_TRIGGER1
+#define PIN_ECHO2
+#define PIN_TRIGGER2
+
 byte PIR1[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
+HC_SR04 sensorEntrada(PIN_TRIGGER1, PIN_ECHO1);
+HC_SR04 sensorFinal(PIN_TRIGGER2, PIN_ECHO2); 
+
+bool passouPeloFinal = false;
+bool passouPeloComeco = false;
 
 void setup() {
     Serial.begin(9600);
@@ -13,6 +24,33 @@ void setup() {
 }
 
 void loop() {
+    // Fazer chamadas na API
+
+    // Checar o sensor ultrassonico do começo
+    if (sensorEntrada.distance() < 20) {
+        if (!passouPeloComeco) {
+            Serial.println("Passou pelo começo pela primeira vez");
+            motorEsquerdaParaDireitaPiramide1();
+        } else {
+            Serial.println("Passou pelo começo pela segunda vez");
+            motorDireitaEsquerdaPiramide1();
+        }
+
+        passouPeloComeco = !passouPeloComeco;
+    }
+
+    // Checar o sensor ultrassonico do final
+    if (sensorFinal.distance() < 20) {
+        if (!passouPeloFinal) {
+            Serial.println("Passou pelo final pela primeira vez");
+            motorEsquerdaParaDireitaPiramide2();
+        } else {
+            Serial.println("Passou pelo final pela segunda vez");
+            motorDireitaParaEsquerdaPiramide2();
+        }
+
+        passouPeloFinal = !passouPeloFinal;
+    }
 }
 
 void vermelhoPiramide1() {
