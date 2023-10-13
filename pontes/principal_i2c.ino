@@ -33,10 +33,10 @@ void loop() {
     // Checar o sensor ultrassonico do começo
     if (sensorEntrada.distance() < 20) {
         if (!passouPelaEntrada) {
-            Serial.println("Passou pelo começo pela primeira vez");
+            Serial.println("Passou pelo entrada pela primeira vez");
             mexerMotoresPiramide1(ESQUERDA, PIRAMIDE);
         } else {
-            Serial.println("Passou pelo começo pela segunda vez");
+            Serial.println("Passou pelo entrada pela segunda vez");
             mexerMotoresPiramide1(DIREITA, ESQUERDA);
         }
 
