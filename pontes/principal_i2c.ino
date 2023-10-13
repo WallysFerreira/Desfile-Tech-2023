@@ -1,26 +1,69 @@
 #include <Wire.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
+#include <ArduinoJson.h>
+
+ESP8266WiFiMulti WiFiMulti;
+
+// Credenciais para wifi
+struct Credenciais {
+  const char* ssid;
+  const char* senha;
+};
+
+Credenciais networks[] = {
+  {"AP1501", "ARBBBE11"},
+  {"Vivo-Internet-E532", "Vivo-Internet-E532"},
+  {"iPhone de Arnott", "arbbbe11"},
+  {"SENAC-Mesh", "09080706"}
+};
 
 #define PIR_1_LIN_1 0x01
 #define PIR_1_LIN_2 0x02
 #define PIR_1_LIN_3 0x03
 #define PIR_1_LIN_4 0x04
+#define PIR_2_LIN_1 0x05
+#define PIR_2_LIN_2 0x06
+#define PIR_2_LIN_3 0x07
+#define PIR_2_LIN_4 0x08
 
-#define PIN_ECHO1 1
-#define PIN_TRIGGER1 2
-#define PIN_ECHO2 3 
-#define PIN_TRIGGER2 4
+#define PIN_ECHO1 D5
+#define PIN_TRIGGER1 D6
+#define PIN_ECHO2 D7 
+#define PIN_TRIGGER2 D8
 
 #define ESQUERDA 0xF3
 #define CIMA 0xF2
 #define DIREITA 0xF1
 
 byte PIR1[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
-byte PIR2[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
+byte PIR2[] = {PIR_2_LIN_1, PIR_2_LIN_2, PIR_2_LIN_3, PIR_2_LIN_4};
 byte MOTORES[] = {0x01, 0x02, 0x03, 0x04};
 byte LEDS[] = {0xA1, 0xA2, 0xA3, 0xA4};
 
 bool passouPeloFinal = false;
 bool passouPelaEntrada = false;
+
+void conectarWifi() {
+  for (int i = 0; i < sizeof(networks) / sizeof(networks[0]); i++) {
+    WiFiMulti.addAP(networks[i].ssid, networks[i].senha);
+    Serial.printf("Tentando conectar a %s...\n", networks[i].ssid);
+
+    // Aguarda a conexão por até 10 segundos
+    for (int j = 0; j < 10; j++) {
+      if (WiFiMulti.run() == WL_CONNECTED) {
+        Serial.printf("Conectado a %s\n", networks[i].ssid);
+        return; // Conexão bem-sucedida, saia da função
+      }
+      delay(1000);
+    }
+    delay(1000);
+    Serial.printf("Falha na conexão a %s\n", networks[i].ssid);
+//    WiFiMulti.removeAP(networks[i].ssid); // Remove a rede da lista para tentar a próxima
+  }
+}
 
 void setup() {
     pinMode(PIN_TRIGGER1, OUTPUT);
@@ -33,11 +76,49 @@ void setup() {
 }
 
 void loop() {
+    conectarWifi();
+   
     digitalWrite(PIN_TRIGGER1, LOW);
     digitalWrite(PIN_TRIGGER2, LOW);
 
     // Fazer chamadas na API
+    if (WiFiMulti.run() == WL_CONNECTED) {
+      WiFiClient client;
+      HTTPClient http;
 
+      if (http.begin(client, "http://recnplay2023.pythonanywhere.com/resultados")) {
+        Serial.print("[HTTP] Get... \n");
+        int httpCode = http.GET();
+        if (httpCode > 0) {
+          if (httpCode == HTTP_CODE_OK) {
+            String payload = http.getString();
+            Serial.println(payload);
+
+            const size_t capacity = JSON_OBJECT_SIZE(3);
+            StaticJsonDocument<200> doc;
+
+            DeserializationError error = deserializeJson(doc, payload);
+
+            if (!error) {
+              int vermelho = doc["vermelho"];
+              int azul = doc["azul"];
+              int verde = doc["verde"];
+
+              Serial.printf("Vermelho: %d\n", vermelho);
+              Serial.printf("Verde: %d\n", verde);
+              Serial.printf("Azul: %d\n", azul); 
+            } else {
+              Serial.println("Falha no parse JSON");
+            }
+          }
+        } else {
+          Serial.printf("[HTTP] Get... failed, error: %s\n", http.errorToString(httpCode).c_str());
+        }
+        http.end();
+      } else {
+        Serial.println("[HTTP] Não conseguiu conectar");
+      }
+    }
     // Checar o sensor ultrassonico do começo
     digitalWrite(PIN_TRIGGER1, HIGH);
     digitalWrite(PIN_TRIGGER2, HIGH);
@@ -45,10 +126,13 @@ void loop() {
     digitalWrite(PIN_TRIGGER1, LOW);
     digitalWrite(PIN_TRIGGER2, LOW);
 
-    int distancia1 = pulseIn(PIN_ECHO1, HIGH) * 0.034 / 2;
+    int duration = pulseIn(PIN_ECHO1, HIGH);
+    int distancia1 = duration * 0.034 / 2;
     int distancia2 = pulseIn(PIN_ECHO2, HIGH) * 0.034 / 2;
-
-    if (distancia1 < 20) {
+    Serial.print("Distancia sensor 1: ");
+    Serial.println(distancia1);
+    
+    if (distancia1 < 15) {
         if (!passouPelaEntrada) {
             Serial.println("Passou pela entrada pela primeira vez");
             mexerMotoresPiramide1(ESQUERDA, DIREITA);
@@ -59,7 +143,7 @@ void loop() {
 
         passouPelaEntrada = !passouPelaEntrada;
     }
-
+/*
     // Checar o sensor ultrassonico do anguloFinal
     if (distancia2 < 20) {
         if (!passouPeloFinal) {
@@ -71,7 +155,7 @@ void loop() {
         }
 
         passouPeloFinal = !passouPeloFinal;
-    }
+    }*/
 }
 
 void vermelhoPiramide1() {
