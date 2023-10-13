@@ -4,6 +4,11 @@
 #define PIR_1_LIN_2 0x02
 #define PIR_1_LIN_3 0x03
 #define PIR_1_LIN_4 0x04
+#define PIR_2_LIN_1 0x05
+#define PIR_2_LIN_2 0x06
+#define PIR_2_LIN_3 0x07
+#define PIR_2_LIN_4 0x08
+
 
 #define PIN_ECHO1 1
 #define PIN_TRIGGER1 2
@@ -15,7 +20,7 @@
 #define DIREITA 0xF1
 
 byte PIR1[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
-byte PIR2[] = {PIR_1_LIN_1, PIR_1_LIN_2, PIR_1_LIN_3, PIR_1_LIN_4};
+byte PIR2[] = {PIR_2_LIN_1, PIR_2_LIN_2, PIR_2_LIN_3, PIR_2_LIN_4};
 byte MOTORES[] = {0x01, 0x02, 0x03, 0x04};
 byte LEDS[] = {0xA1, 0xA2, 0xA3, 0xA4};
 
