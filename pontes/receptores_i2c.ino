@@ -2,15 +2,15 @@
 #include "base.hpp"
 
 // Mudar conforme a linha onde o arduino for colocado, de cima para baixo
-#define MINHA_LINHA 0x01
+#define MINHA_LINHA 0x02
 
 // Mudar confome a quantidade de motores na linha
-#define MOTOR1 5
+#define MOTOR1 3
 #define MOTOR2 6
 #define MOTOR3 7
 #define MOTOR4 8
 
-#define VERMELHO1 1
+#define VERMELHO1 5
 #define VERDE1 2
 #define AZUL1 3
 
@@ -56,7 +56,20 @@ void eventoReceber(int _) {
         parametro2 = Wire.read();
         parametro3 = Wire.read();
     }
+    Serial.println("recebeu: ");
+    Serial.println(oqueMudar, HEX);
+    Serial.println(parametro1, HEX);
+    Serial.println(parametro2, HEX);
+    Serial.println(parametro3, HEX);
+    if (parametro1 == 0xF1) parametro1 = 0;
+    if (parametro1 == 0xF2) parametro1 = 90;
+    if (parametro1 == 0xF3) parametro1 = 180;
+    if (parametro2 == 0xF1) parametro2 = 0;
+    if (parametro2 == 0xF2) parametro2 = 90;
+    if (parametro2 == 0xF3) parametro2 = 180;
 
+    Serial.println(parametro1);
+    Serial.println(parametro2);
     switch (oqueMudar) {
         case 0x01:
             mexerMotor(m1, parametro1, parametro2, parametro3);
