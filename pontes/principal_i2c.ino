@@ -75,6 +75,8 @@ void setup() {
     Wire.begin();
 }
 
+String ultimaMaisVotada;
+String ultimaSegundaMaisVotada;
 void loop() {
     conectarWifi();
    
@@ -100,13 +102,56 @@ void loop() {
             DeserializationError error = deserializeJson(doc, payload);
 
             if (!error) {
-              int vermelho = doc["vermelho"];
-              int azul = doc["azul"];
-              int verde = doc["verde"];
+              int qntdVermelho = doc["vermelho"];
+              int qntdAzul = doc["azul"];
+              int qntdVerde = doc["verde"];
+              String maisVotada;
+              String segundaMaisVotada;
 
-              Serial.printf("Vermelho: %d\n", vermelho);
-              Serial.printf("Verde: %d\n", verde);
-              Serial.printf("Azul: %d\n", azul); 
+              Serial.printf("Vermelho: %d\n", qntdVermelho);
+              Serial.printf("Verde: %d\n", qntdVerde);
+              Serial.printf("Azul: %d\n", qntdAzul);
+
+              if (qntdVermelho >= qntdVerde && qntdVermelho >= qntdAzul) {
+                maisVotada = "vermelho";
+
+                if (qntdVerde > qntdAzul) {
+                  segundaMaisVotada = "verde";
+                } else {
+                  segundaMaisVotada = "azul";
+                }
+              }
+              else if (qntdVerde >= qntdVermelho && qntdVerde >= qntdAzul) {
+                maisVotada = "verde";
+
+                if (qntdVermelho > qntdAzul) {
+                  segundaMaisVotada = "vermelho";
+                } else {
+                  segundaMaisVotada = "azul";
+                }
+              }
+              else if (qntdAzul >= qntdVermelho && qntdAzul >= qntdVerde) {
+                maisVotada = "azul";
+
+                if (qntdVermelho > qntdVerde) {
+                  segundaMaisVotada = "vermelho";
+                }
+                else {
+                  segundaMaisVotada = "verde";
+                }
+              }
+
+              if (ultimaMaisVotada != maisVotada) {
+                ultimaMaisVotada = maisVotada;
+
+                mudarCorPiramide(ultimaMaisVotada, 1);
+              }
+
+              if (ultimaSegundaMaisVotada != segundaMaisVotada) {
+                ultimaSegundaMaisVotada = segundaMaisVotada;
+
+                mudarCorPiramide(ultimaSegundaMaisVotada, 2);
+              }
             } else {
               Serial.println("Falha no parse JSON");
             }
@@ -118,75 +163,170 @@ void loop() {
       } else {
         Serial.println("[HTTP] Não conseguiu conectar");
       }
-    }
-    // Checar o sensor ultrassonico do começo
-    digitalWrite(PIN_TRIGGER1, HIGH);
-    digitalWrite(PIN_TRIGGER2, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(PIN_TRIGGER1, LOW);
-    digitalWrite(PIN_TRIGGER2, LOW);
 
-    int duration = pulseIn(PIN_ECHO1, HIGH);
-    int distancia1 = duration * 0.034 / 2;
-    int distancia2 = pulseIn(PIN_ECHO2, HIGH) * 0.034 / 2;
-    Serial.print("Distancia sensor 1: ");
-    Serial.println(distancia1);
+      // Pegar distancia dos sensores
+      digitalWrite(PIN_TRIGGER1, HIGH);
+      digitalWrite(PIN_TRIGGER2, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(PIN_TRIGGER1, LOW);
+      digitalWrite(PIN_TRIGGER2, LOW);
+
+      int duration = pulseIn(PIN_ECHO1, HIGH);
+      int distancia1 = duration * 0.034 / 2;
+      int distancia2 = pulseIn(PIN_ECHO2, HIGH) * 0.034 / 2;
+      Serial.print("Distancia sensor 1: ");
+      Serial.println(distancia1);
+      Serial.print("Distancia sensor 2: ");
+      Serial.println(distancia2);
     
-    if (distancia1 < 15) {
+      // Checar o sensor ultrassonico do começo
+      if (distancia1 < 15) {
         if (!passouPelaEntrada) {
             Serial.println("Passou pela entrada pela primeira vez");
-            mexerMotoresPiramide1(ESQUERDA, DIREITA);
+            mexerMotores(ESQUERDA, DIREITA, 1);
         } else {
             Serial.println("Passou pela entrada pela segunda vez");
-            mexerMotoresPiramide1(DIREITA, ESQUERDA);
+            mexerMotores(DIREITA, ESQUERDA, 1);
+
+            String corResultado = mesclarCores(ultimaMaisVotada, ultimaSegundaMaisVotada);
+
+            mudarCorPiramide(corResultado, 1);
+            mudarCorPiramide(corResultado, 2);
+            delay(3000);
         }
 
         passouPelaEntrada = !passouPelaEntrada;
+      }
     }
 /*
-    // Checar o sensor ultrassonico do anguloFinal
+    // Checar o sensor ultrassonico do final
     if (distancia2 < 20) {
         if (!passouPeloFinal) {
             Serial.println("Passou pelo final pela primeira vez");
-            mexerMotoresPiramide2(ESQUERDA, DIREITA);
+            mexerMotores(ESQUERDA, DIREITA, 2);
         } else {
             Serial.println("Passou pelo final pela segunda vez");
-            mexerMotoresPiramide2(DIREITA, ESQUERDA);
+            mexerMotores(DIREITA, ESQUERDA, 2);
         }
 
         passouPeloFinal = !passouPeloFinal;
     }*/
 }
 
-void vermelhoPiramide1() {
-    byte data[] = {0xA5, 0xFF, 0x00, 0x00};
-    for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
+String mesclarCores(String cor1, String cor2) {
+  // Combinações com vermelho
+  if (cor1 == "vermelho") {
+    if (cor2 == "verde") {
+      return "amarelo";
+    } else if (cor2 == "azul") {
+      return "magenta";
+    }
+  }
+  if (cor2 == "vermelho") {
+    if (cor1 == "verde") {
+      return "amarelo";
+    } else if (cor1 == "azul") {
+      return "magenta";
+    }
+  }
+
+  // Combinações com verde
+  if (cor1 == "verde") {
+    if (cor2 == "vermelho") {
+      return "amarelo";
+    } else if (cor2 == "azul") {
+      return "ciano";
+    }
+  }
+  if (cor2 == "verde") {
+    if (cor1 == "vermelho") {
+      return "amarelo";
+    } else if (cor1 == "azul") {
+      return "ciano";
+    }
+  }
+
+  // Combinações com azul
+  if (cor1 == "azul") {
+    if (cor2 == "vermelho") {
+      return "magenta";
+    } else if (cor2 == "verde") {
+      return "ciano";
+    }
+  }
+  if (cor2 == "azul") {
+    if (cor1 == "vermelho") {
+      return "magenta";
+    } else if (cor1 == "verde") {
+      return "ciano";
+    }
+  }
+
+  return "";
+}
+
+void mudarCorPiramide(String cor, int qualPiramide) {
+  if (cor == "vermelho") {
+    mudarTodosLeds(0xFF, 0x00, 0x00, qualPiramide);
+  } else if (cor == "verde") {
+    mudarTodosLeds(0x00, 0xFF, 0x00, qualPiramide);
+  } else if (cor == "azul") {
+    mudarTodosLeds(0x00, 0x00, 0xFF, qualPiramide);
+  } else if (cor == "amarelo") {
+    mudarTodosLeds(0xFF, 0xFF, 0x00, qualPiramide);
+  } else if (cor == "magenta") {
+    mudarTodosLeds(0xFF, 0x00, 0xFF, qualPiramide);
+  } else if (cor == "ciano") {
+    mudarTodosLeds(0x00, 0xFF, 0xFF, qualPiramide); 
+  }
+}
+
+void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPiramide) { 
+    byte data[] = {0xA5, qntdVermelho, qntdVerde, qntdAzul};
+
+    switch (qualPiramide) {
+      case 1:
+        for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
+          Wire.beginTransmission(PIR1[i]);
+          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
+            Wire.write(data[i]);
+          }
+          Wire.endTransmission();
+        }
+        break;
+      case 2:
+        for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
+          Wire.beginTransmission(PIR2[i]);
+          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
+            Wire.write(data[i]);
+          }
+          Wire.endTransmission();
+        }
+        break;
+    }
+}
+
+void mexerMotores(int anguloComeco, int anguloFinal, int qualPiramide) {
+  byte data[] = {0x05, anguloComeco, anguloFinal, 0x02};
+  
+  switch (qualPiramide) {
+    case 1:
+      for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
         Wire.beginTransmission(PIR1[i]);
         for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
             Wire.write(data[i]);
         }
         Wire.endTransmission();
-    }
-}
-
-void mexerMotoresPiramide1(int anguloComeco, int anguloFinal) {
-    byte data[] = {0x05, anguloComeco, anguloFinal, 0x02};
-    for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
-        Wire.beginTransmission(PIR1[i]);
-        for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
-            Wire.write(data[i]);
-        }
-        Wire.endTransmission();
-    }
-}
-
-void mexerMotoresPiramide2(int anguloComeco, int anguloFinal) {
-    byte data[] = {0x05, anguloComeco, anguloFinal, 0x02};
-    for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
+      }
+      break;
+    case 2:
+      for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
         Wire.beginTransmission(PIR2[i]);
         for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
             Wire.write(data[i]);
         }
         Wire.endTransmission();
+      }
+      break;
     }
 }
