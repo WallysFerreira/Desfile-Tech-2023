@@ -29,11 +29,6 @@ Credenciais networks[] = {
 #define PIR_2_LIN_3 0x07
 #define PIR_2_LIN_4 0x08
 
-#define PIN_ECHO1 D5
-#define PIN_TRIGGER1 D6
-#define PIN_ECHO2 D7 
-#define PIN_TRIGGER2 D8
-
 #define ESQUERDA 0xF3
 #define CIMA 0xF2
 #define DIREITA 0xF1
@@ -66,11 +61,6 @@ void conectarWifi() {
 }
 
 void setup() {
-    pinMode(PIN_TRIGGER1, OUTPUT);
-    pinMode(PIN_TRIGGER2, OUTPUT);
-    pinMode(PIN_ECHO1, INPUT);
-    pinMode(PIN_ECHO2, INPUT);
-
     Serial.begin(9600);
     Wire.begin();
 }
@@ -79,9 +69,6 @@ String ultimaMaisVotada;
 String ultimaSegundaMaisVotada;
 void loop() {
     conectarWifi();
-   
-    digitalWrite(PIN_TRIGGER1, LOW);
-    digitalWrite(PIN_TRIGGER2, LOW);
 
     // Fazer chamadas na API
     if (WiFiMulti.run() == WL_CONNECTED) {
