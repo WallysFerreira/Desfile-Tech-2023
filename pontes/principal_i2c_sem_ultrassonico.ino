@@ -14,10 +14,10 @@ struct Credenciais {
 };
 
 Credenciais networks[] = {
+  {"SENAC-Mesh", "09080706"},
   {"AP1501", "ARBBBE11"},
   {"Vivo-Internet-E532", "Vivo-Internet-E532"},
   {"iPhone de Arnott", "arbbbe11"},
-  {"SENAC-Mesh", "09080706"}
 };
 
 #define PIR_1_LIN_1 0x01
@@ -150,58 +150,9 @@ void loop() {
       } else {
         Serial.println("[HTTP] Não conseguiu conectar");
       }
-}
+    }
 
-String mesclarCores(String cor1, String cor2) {
-  // Combinações com vermelho
-  if (cor1 == "vermelho") {
-    if (cor2 == "verde") {
-      return "amarelo";
-    } else if (cor2 == "azul") {
-      return "magenta";
-    }
-  }
-  if (cor2 == "vermelho") {
-    if (cor1 == "verde") {
-      return "amarelo";
-    } else if (cor1 == "azul") {
-      return "magenta";
-    }
-  }
-
-  // Combinações com verde
-  if (cor1 == "verde") {
-    if (cor2 == "vermelho") {
-      return "amarelo";
-    } else if (cor2 == "azul") {
-      return "ciano";
-    }
-  }
-  if (cor2 == "verde") {
-    if (cor1 == "vermelho") {
-      return "amarelo";
-    } else if (cor1 == "azul") {
-      return "ciano";
-    }
-  }
-
-  // Combinações com azul
-  if (cor1 == "azul") {
-    if (cor2 == "vermelho") {
-      return "magenta";
-    } else if (cor2 == "verde") {
-      return "ciano";
-    }
-  }
-  if (cor2 == "azul") {
-    if (cor1 == "vermelho") {
-      return "magenta";
-    } else if (cor1 == "verde") {
-      return "ciano";
-    }
-  }
-
-  return "";
+    delay(1000);
 }
 
 void mudarCorPiramide(String cor, int qualPiramide) {
@@ -223,12 +174,16 @@ void mudarCorPiramide(String cor, int qualPiramide) {
 void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPiramide) { 
     byte data[] = {0xA5, qntdVermelho, qntdVerde, qntdAzul};
 
+    Serial.println("enviando i2c");
+
     switch (qualPiramide) {
       case 1:
         for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
+          Serial.print("enviando para endereco ");
+          Serial.println(PIR1[i]);
           Wire.beginTransmission(PIR1[i]);
-          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
-            Wire.write(data[i]);
+          for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+            Wire.write(data[j]);
           }
           Wire.endTransmission();
         }
@@ -236,8 +191,8 @@ void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPi
       case 2:
         for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
           Wire.beginTransmission(PIR2[i]);
-          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
-            Wire.write(data[i]);
+          for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+            Wire.write(data[j]);
           }
           Wire.endTransmission();
         }
@@ -247,6 +202,8 @@ void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPi
 
 void mexerMotores(int anguloComeco, int anguloFinal, int qualPiramide) {
   byte data[] = {0x05, anguloComeco, anguloFinal, 0x02};
+
+  Serial.println("enviando i2c");
   
   switch (qualPiramide) {
     case 1:
