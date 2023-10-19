@@ -31,7 +31,7 @@ Credenciais networks[] = {
 
 #define PIN_ECHO1 D5
 #define PIN_TRIGGER1 D6
-#define PIN_ECHO2 D7 
+#define PIN_ECHO2 D7
 #define PIN_TRIGGER2 D8
 
 #define ESQUERDA 0xF3
@@ -99,7 +99,7 @@ void loop() {
             const size_t capacity = JSON_OBJECT_SIZE(3);
             StaticJsonDocument<200> doc;
 
-            DeserializationError error = deserializeJson(doc, payload);
+            DeserializationError error = deserializeJson(doc, payload); 
 
             if (!error) {
               int qntdVermelho = doc["vermelho"];
@@ -164,16 +164,22 @@ void loop() {
         Serial.println("[HTTP] Não conseguiu conectar");
       }
 
-      // Pegar distancia dos sensores
+      
+    }
+    // Pegar distancia dos sensores
       digitalWrite(PIN_TRIGGER1, HIGH);
-      digitalWrite(PIN_TRIGGER2, HIGH);
       delayMicroseconds(10);
       digitalWrite(PIN_TRIGGER1, LOW);
-      digitalWrite(PIN_TRIGGER2, LOW);
 
       int duration = pulseIn(PIN_ECHO1, HIGH);
       int distancia1 = duration * 0.034 / 2;
-      int distancia2 = pulseIn(PIN_ECHO2, HIGH) * 0.034 / 2;
+      delay(300);
+
+      digitalWrite(PIN_TRIGGER2, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(PIN_TRIGGER2, LOW);
+      int duration2 = pulseIn(PIN_ECHO2, HIGH);
+      int distancia2 = duration2 * 0.034 / 2;
       Serial.print("Distancia sensor 1: ");
       Serial.println(distancia1);
       Serial.print("Distancia sensor 2: ");
@@ -191,10 +197,10 @@ void loop() {
 
         passouPelaEntrada = !passouPelaEntrada;
       }
-    }
+    
 
     // Checar o sensor ultrassonico do final
-    if (distancia2 < 20) {
+      if (distancia2 < 20) {
         if (!passouPeloFinal) {
             Serial.println("Passou pelo final pela primeira vez");
             mexerMotores(ESQUERDA, DIREITA, 2);
@@ -204,7 +210,8 @@ void loop() {
         }
 
         passouPeloFinal = !passouPeloFinal;
-    }
+      }
+      delay(200);
 }
 
 void mudarCorPiramide(String cor, int qualPiramide) {
