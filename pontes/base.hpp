@@ -23,7 +23,13 @@ void mexerMotor(Servo motor, int posInicial, int posFinal, int velocidade) {
 
 // Função para controlar luzes
 void mudarLuz(int pinoVermelho, int pinoVerde, int pinoAzul, int intensidadeVermelho, int intensidadeVerde, int intensidadeAzul) {
-    analogWrite(pinoVermelho, intensidadeVermelho);
-    analogWrite(pinoVerde, intensidadeVerde);
-    analogWrite(pinoAzul, intensidadeAzul);
+    analogWrite(pinoVermelho, 255 - intensidadeVermelho);
+    analogWrite(pinoVerde, 255 - intensidadeVerde);
+    analogWrite(pinoAzul, 255 - intensidadeAzul);
+}
+
+void colocarTodosLedsHigh(int pinoVermelho, int pinoVerde, int pinoAzul) {
+    analogWrite(pinoVermelho, 255);
+    analogWrite(pinoVerde, 255);
+    analogWrite(pinoAzul, 255);
 }

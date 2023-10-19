@@ -35,6 +35,7 @@ void setup() {
     Serial.begin(9600);
     Wire.begin(MINHA_LINHA);
     Wire.onReceive(eventoReceber);
+    colocarTodosLedsHigh();
     m1.attach(MOTOR1);
     m2.attach(MOTOR2);
     m3.attach(MOTOR3);
