@@ -147,6 +147,8 @@ void colocarTodosLedsHigh() {
 }
 
 void fade(String cor) {
+    colocarTodosLedsHigh();
+    
     if (cor == "vermelho") {
         for (int i = 0; i <= 60; i++) {
             for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); i++) {

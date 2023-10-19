@@ -113,13 +113,13 @@ void loop() {
               if (ultimaMaisVotada != maisVotada) {
                 ultimaMaisVotada = maisVotada;
 
-                mudarCorPiramide(ultimaMaisVotada, 1);
+                mudarCorPiramide(ultimaMaisVotada, 1, "mais");
               }
 
               if (ultimaVotada != ultima) {
                 ultima = ultimaVotada;
 
-                mudarCorPiramide(ultima, 2);
+                mudarCorPiramide(ultima, 2, "ultima");
               }
             } else {
               Serial.println("Falha no parse JSON");
@@ -194,24 +194,29 @@ void loop() {
     delay(1000);
 }
 
-void mudarCorPiramide(String cor, int qualPiramide) {
+void mudarCorPiramide(String cor, int qualPiramide, String qualCor) {
+  byte qual;
+
+  if (qualCor == "ultima") qual = 0xA6;
+  if (qualCor == "mais") qual = 0xA5;
+
   if (cor == "vermelho") {
-    mudarTodosLeds(0xFF, 0x00, 0x00, qualPiramide);
+    mudarTodosLeds(qual, 0xFF, 0x00, 0x00, qualPiramide);
   } else if (cor == "verde") {
-    mudarTodosLeds(0x00, 0xFF, 0x00, qualPiramide);
+    mudarTodosLeds(qual, 0x00, 0xFF, 0x00, qualPiramide);
   } else if (cor == "azul") {
-    mudarTodosLeds(0x00, 0x00, 0xFF, qualPiramide);
+    mudarTodosLeds(qual, 0x00, 0x00, 0xFF, qualPiramide);
   } else if (cor == "amarelo") {
-    mudarTodosLeds(0xFF, 0xFF, 0x00, qualPiramide);
+    mudarTodosLeds(qual, 0xFF, 0xFF, 0x00, qualPiramide);
   } else if (cor == "magenta") {
-    mudarTodosLeds(0xFF, 0x00, 0xFF, qualPiramide);
+    mudarTodosLeds(qual, 0xFF, 0x00, 0xFF, qualPiramide);
   } else if (cor == "ciano") {
-    mudarTodosLeds(0x00, 0xFF, 0xFF, qualPiramide); 
+    mudarTodosLeds(qual, 0x00, 0xFF, 0xFF, qualPiramide); 
   }
 }
 
-void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPiramide) { 
-    byte data[] = {0xA5, qntdVermelho, qntdVerde, qntdAzul};
+void mudarTodosLeds(byte qualCor, byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPiramide) { 
+    byte data[] = {qualCor, qntdVermelho, qntdVerde, qntdAzul};
 
     Serial.println("enviando i2c");
 
