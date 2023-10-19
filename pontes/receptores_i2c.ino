@@ -110,3 +110,18 @@ void eventoReceber(int _) {
             break;
     }
 }
+
+void colocarTodosLedsHigh() {
+    analogWrite(VERMELHO1, HIGH);
+    analogWrite(VERMELHO2, HIGH);
+    analogWrite(VERMELHO3, HIGH);
+    analogWrite(VERMELHO4, HIGH);
+    analogWrite(VERDE1, HIGH);
+    analogWrite(VERDE2, HIGH);
+    analogWrite(VERDE3, HIGH);
+    analogWrite(VERDE4, HIGH);
+    analogWrite(AZUL1, HIGH);
+    analogWrite(AZUL2, HIGH);
+    analogWrite(AZUL3, HIGH);
+    analogWrite(AZUL4, HIGH);
+}

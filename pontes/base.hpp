@@ -27,9 +27,3 @@ void mudarLuz(int pinoVermelho, int pinoVerde, int pinoAzul, int intensidadeVerm
     analogWrite(pinoVerde, 255 - intensidadeVerde);
     analogWrite(pinoAzul, 255 - intensidadeAzul);
 }
-
-void colocarTodosLedsHigh(int pinoVermelho, int pinoVerde, int pinoAzul) {
-    analogWrite(pinoVermelho, 255);
-    analogWrite(pinoVerde, 255);
-    analogWrite(pinoAzul, 255);
-}
