@@ -63,6 +63,7 @@ void conectarWifi() {
 void setup() {
     Serial.begin(9600);
     Wire.begin();
+    randomSeed(analogRead(0));
 }
 
 String ultimaMaisVotada;
@@ -151,6 +152,63 @@ void loop() {
         Serial.println("[HTTP] Não conseguiu conectar");
       }
     }
+
+    byte ladoAleatorioComeco;
+    byte ladoAleatorioFinal;
+
+    switch (random(2) + 1) {
+      case 1:
+        ladoAleatorioComeco = CIMA;
+        break;
+      case 2:
+        ladoAleatorioComeco = ESQUERDA;
+        break;
+      case 3:
+        ladoAleatorioComeco = DIREITA;
+        break;
+    }
+
+    switch (random(2) + 1) {
+      case 1:
+        ladoAleatorioFinal = CIMA;
+        break;
+      case 2:
+        ladoAleatorioFinal = ESQUERDA;
+        break;
+      case 3:
+        ladoAleatorioFinal = DIREITA;
+        break;
+    }
+
+    mexerMotores(ladoAleatorioComeco, ladoAleatorioFinal, 1);
+    
+    switch (random(2) + 1) {
+      case 1:
+        ladoAleatorioComeco = CIMA;
+        break;
+      case 2:
+        ladoAleatorioComeco = ESQUERDA;
+        break;
+      case 3:
+        ladoAleatorioComeco = DIREITA;
+        break;
+    }
+
+    switch (random(2) + 1) {
+      case 1:
+        ladoAleatorioFinal = CIMA;
+        break;
+      case 2:
+        ladoAleatorioFinal = ESQUERDA;
+        break;
+      case 3:
+        ladoAleatorioFinal = DIREITA;
+        break;
+    }
+
+    mexerMotores(ladoAleatorioComeco, ladoAleatorioFinal, 2);
+
+
 
     delay(1000);
 }
