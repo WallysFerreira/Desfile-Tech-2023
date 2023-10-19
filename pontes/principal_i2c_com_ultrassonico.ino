@@ -14,10 +14,10 @@ struct Credenciais {
 };
 
 Credenciais networks[] = {
+  {"SENAC-Mesh", "09080706"},
   {"AP1501", "ARBBBE11"},
   {"Vivo-Internet-E532", "Vivo-Internet-E532"},
   {"iPhone de Arnott", "arbbbe11"},
-  {"SENAC-Mesh", "09080706"}
 };
 
 #define PIR_1_LIN_1 0x01
