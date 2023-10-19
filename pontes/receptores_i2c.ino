@@ -2,29 +2,29 @@
 #include "base.hpp"
 
 // Mudar conforme a linha onde o arduino for colocado, de cima para baixo
-#define MINHA_LINHA 0x02
+#define MINHA_LINHA 0x01
 
 // Mudar confome a quantidade de motores na linha
 #define MOTOR1 3
-#define MOTOR2 6
-#define MOTOR3 7
-#define MOTOR4 8
+#define MOTOR2 5
+#define MOTOR3 6
+#define MOTOR4 9
 
-#define VERMELHO1 5
+#define VERMELHO1 2
 #define VERDE1 4
-#define AZUL1 2
+#define AZUL1 7
 
-#define VERMELHO2 9
-#define VERDE2 10
-#define AZUL2 11
+#define VERMELHO2 8
+#define VERDE2 12
+#define AZUL2 13
 
-#define VERMELHO3 12
-#define VERDE3 13
-#define AZUL3 14
+#define VERMELHO3 A0
+#define VERDE3 A1
+#define AZUL3 A2
 
-#define VERMELHO4 15
-#define VERDE4 16
-#define AZUL4 17
+#define VERMELHO4 A3
+#define VERDE4 A4
+#define AZUL4 A5
 
 Servo m1;
 Servo m2;
