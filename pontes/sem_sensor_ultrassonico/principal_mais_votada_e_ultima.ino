@@ -206,13 +206,7 @@ void mudarCorPiramide(String cor, int qualPiramide, String qualCor) {
     mudarTodosLeds(qual, 0x00, 0xFF, 0x00, qualPiramide);
   } else if (cor == "azul") {
     mudarTodosLeds(qual, 0x00, 0x00, 0xFF, qualPiramide);
-  } else if (cor == "amarelo") {
-    mudarTodosLeds(qual, 0xFF, 0xFF, 0x00, qualPiramide);
-  } else if (cor == "magenta") {
-    mudarTodosLeds(qual, 0xFF, 0x00, 0xFF, qualPiramide);
-  } else if (cor == "ciano") {
-    mudarTodosLeds(qual, 0x00, 0xFF, 0xFF, qualPiramide); 
-  }
+  } 
 }
 
 void mudarTodosLeds(byte qualCor, byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPiramide) { 
