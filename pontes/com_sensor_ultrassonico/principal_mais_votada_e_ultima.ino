@@ -15,8 +15,8 @@ struct Credenciais {
 
 Credenciais networks[] = {
   {"SENAC-Mesh", "09080706"},
+  {"Vivo-Internet-E532", "6EFC366C"},
   {"AP1501", "ARBBBE11"},
-  {"Vivo-Internet-E532", "Vivo-Internet-E532"},
   {"iPhone de Arnott", "arbbbe11"},
 };
 
@@ -28,6 +28,11 @@ Credenciais networks[] = {
 #define PIR_2_LIN_2 0x06
 #define PIR_2_LIN_3 0x07
 #define PIR_2_LIN_4 0x08
+
+#define PIN_ECHO1 D5
+#define PIN_TRIGGER1 D6
+#define PIN_ECHO2 D7
+#define PIN_TRIGGER2 D8
 
 #define ESQUERDA 0xF3
 #define CIMA 0xF2
@@ -61,14 +66,22 @@ void conectarWifi() {
 }
 
 void setup() {
+    pinMode(PIN_TRIGGER1, OUTPUT);
+    pinMode(PIN_TRIGGER2, OUTPUT);
+    pinMode(PIN_ECHO1, INPUT);
+    pinMode(PIN_ECHO2, INPUT);
+
     Serial.begin(9600);
     Wire.begin();
 }
 
 String ultimaMaisVotada;
-String ultimaSegundaMaisVotada;
+String ultima;
 void loop() {
     conectarWifi();
+   
+    digitalWrite(PIN_TRIGGER1, LOW);
+    digitalWrite(PIN_TRIGGER2, LOW);
 
     // Fazer chamadas na API
     if (WiFiMulti.run() == WL_CONNECTED) {
@@ -86,14 +99,14 @@ void loop() {
             const size_t capacity = JSON_OBJECT_SIZE(3);
             StaticJsonDocument<200> doc;
 
-            DeserializationError error = deserializeJson(doc, payload);
+            DeserializationError error = deserializeJson(doc, payload); 
 
             if (!error) {
               int qntdVermelho = doc["vermelho"];
               int qntdAzul = doc["azul"];
               int qntdVerde = doc["verde"];
               String maisVotada;
-              String segundaMaisVotada;
+              String ultimaVotada = doc["ultimo"];
 
               Serial.printf("Vermelho: %d\n", qntdVermelho);
               Serial.printf("Verde: %d\n", qntdVerde);
@@ -101,31 +114,12 @@ void loop() {
 
               if (qntdVermelho >= qntdVerde && qntdVermelho >= qntdAzul) {
                 maisVotada = "vermelho";
-
-                if (qntdVerde > qntdAzul) {
-                  segundaMaisVotada = "verde";
-                } else {
-                  segundaMaisVotada = "azul";
-                }
               }
               else if (qntdVerde >= qntdVermelho && qntdVerde >= qntdAzul) {
                 maisVotada = "verde";
-
-                if (qntdVermelho > qntdAzul) {
-                  segundaMaisVotada = "vermelho";
-                } else {
-                  segundaMaisVotada = "azul";
-                }
               }
               else if (qntdAzul >= qntdVermelho && qntdAzul >= qntdVerde) {
                 maisVotada = "azul";
-
-                if (qntdVermelho > qntdVerde) {
-                  segundaMaisVotada = "vermelho";
-                }
-                else {
-                  segundaMaisVotada = "verde";
-                }
               }
 
               if (ultimaMaisVotada != maisVotada) {
@@ -134,10 +128,10 @@ void loop() {
                 mudarCorPiramide(ultimaMaisVotada, 1);
               }
 
-              if (ultimaSegundaMaisVotada != segundaMaisVotada) {
-                ultimaSegundaMaisVotada = segundaMaisVotada;
+              if (ultimaVotada != ultima) {
+                ultima = ultimaVotada;
 
-                mudarCorPiramide(ultimaSegundaMaisVotada, 2);
+                mudarCorPiramide(ultima, 2);
               }
             } else {
               Serial.println("Falha no parse JSON");
@@ -150,9 +144,55 @@ void loop() {
       } else {
         Serial.println("[HTTP] Não conseguiu conectar");
       }
-    }
 
-    delay(1000);
+      
+    }
+    // Pegar distancia dos sensores
+      digitalWrite(PIN_TRIGGER1, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(PIN_TRIGGER1, LOW);
+
+      int duration = pulseIn(PIN_ECHO1, HIGH);
+      int distancia1 = duration * 0.034 / 2;
+      delay(300);
+
+      digitalWrite(PIN_TRIGGER2, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(PIN_TRIGGER2, LOW);
+      int duration2 = pulseIn(PIN_ECHO2, HIGH);
+      int distancia2 = duration2 * 0.034 / 2;
+      Serial.print("Distancia sensor 1: ");
+      Serial.println(distancia1);
+      Serial.print("Distancia sensor 2: ");
+      Serial.println(distancia2);
+    
+      // Checar o sensor ultrassonico do começo
+      if (distancia1 < 15) {
+        if (!passouPelaEntrada) {
+            Serial.println("Passou pela entrada pela primeira vez");
+            mexerMotores(ESQUERDA, DIREITA, 1);
+        } else {
+            Serial.println("Passou pela entrada pela segunda vez");
+            mexerMotores(DIREITA, ESQUERDA, 1);
+        }
+
+        passouPelaEntrada = !passouPelaEntrada;
+      }
+    
+
+    // Checar o sensor ultrassonico do final
+      if (distancia2 < 20) {
+        if (!passouPeloFinal) {
+            Serial.println("Passou pelo final pela primeira vez");
+            mexerMotores(ESQUERDA, DIREITA, 2);
+        } else {
+            Serial.println("Passou pelo final pela segunda vez");
+            mexerMotores(DIREITA, ESQUERDA, 2);
+        }
+
+        passouPeloFinal = !passouPeloFinal;
+      }
+      delay(200);
 }
 
 void mudarCorPiramide(String cor, int qualPiramide) {
@@ -174,16 +214,12 @@ void mudarCorPiramide(String cor, int qualPiramide) {
 void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPiramide) { 
     byte data[] = {0xA5, qntdVermelho, qntdVerde, qntdAzul};
 
-    Serial.println("enviando i2c");
-
     switch (qualPiramide) {
       case 1:
         for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
-          Serial.print("enviando para endereco ");
-          Serial.println(PIR1[i]);
           Wire.beginTransmission(PIR1[i]);
-          for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
-            Wire.write(data[j]);
+          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
+            Wire.write(data[i]);
           }
           Wire.endTransmission();
         }
@@ -191,8 +227,8 @@ void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPi
       case 2:
         for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
           Wire.beginTransmission(PIR2[i]);
-          for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
-            Wire.write(data[j]);
+          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
+            Wire.write(data[i]);
           }
           Wire.endTransmission();
         }
@@ -202,8 +238,6 @@ void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPi
 
 void mexerMotores(int anguloComeco, int anguloFinal, int qualPiramide) {
   byte data[] = {0x05, anguloComeco, anguloFinal, 0x02};
-
-  Serial.println("enviando i2c");
   
   switch (qualPiramide) {
     case 1:
