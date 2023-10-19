@@ -14,10 +14,10 @@ struct Credenciais {
 };
 
 Credenciais networks[] = {
+  {"SENAC-Mesh", "09080706"},
+  {"Vivo-Internet-E532", "6EFC366C"},
   {"AP1501", "ARBBBE11"},
-  {"Vivo-Internet-E532", "Vivo-Internet-E532"},
   {"iPhone de Arnott", "arbbbe11"},
-  {"SENAC-Mesh", "09080706"}
 };
 
 #define PIR_1_LIN_1 0x01
@@ -187,18 +187,12 @@ void loop() {
         } else {
             Serial.println("Passou pela entrada pela segunda vez");
             mexerMotores(DIREITA, ESQUERDA, 1);
-
-            String corResultado = mesclarCores(ultimaMaisVotada, ultimaSegundaMaisVotada);
-
-            mudarCorPiramide(corResultado, 1);
-            mudarCorPiramide(corResultado, 2);
-            delay(3000);
         }
 
         passouPelaEntrada = !passouPelaEntrada;
       }
     }
-/*
+
     // Checar o sensor ultrassonico do final
     if (distancia2 < 20) {
         if (!passouPeloFinal) {
@@ -210,59 +204,7 @@ void loop() {
         }
 
         passouPeloFinal = !passouPeloFinal;
-    }*/
-}
-
-String mesclarCores(String cor1, String cor2) {
-  // Combinações com vermelho
-  if (cor1 == "vermelho") {
-    if (cor2 == "verde") {
-      return "amarelo";
-    } else if (cor2 == "azul") {
-      return "magenta";
     }
-  }
-  if (cor2 == "vermelho") {
-    if (cor1 == "verde") {
-      return "amarelo";
-    } else if (cor1 == "azul") {
-      return "magenta";
-    }
-  }
-
-  // Combinações com verde
-  if (cor1 == "verde") {
-    if (cor2 == "vermelho") {
-      return "amarelo";
-    } else if (cor2 == "azul") {
-      return "ciano";
-    }
-  }
-  if (cor2 == "verde") {
-    if (cor1 == "vermelho") {
-      return "amarelo";
-    } else if (cor1 == "azul") {
-      return "ciano";
-    }
-  }
-
-  // Combinações com azul
-  if (cor1 == "azul") {
-    if (cor2 == "vermelho") {
-      return "magenta";
-    } else if (cor2 == "verde") {
-      return "ciano";
-    }
-  }
-  if (cor2 == "azul") {
-    if (cor1 == "vermelho") {
-      return "magenta";
-    } else if (cor1 == "verde") {
-      return "ciano";
-    }
-  }
-
-  return "";
 }
 
 void mudarCorPiramide(String cor, int qualPiramide) {

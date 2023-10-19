@@ -11,8 +11,8 @@
 #define MOTOR4 8
 
 #define VERMELHO1 5
-#define VERDE1 2
-#define AZUL1 3
+#define VERDE1 4
+#define AZUL1 2
 
 #define VERMELHO2 9
 #define VERDE2 10
