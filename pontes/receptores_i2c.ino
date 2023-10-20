@@ -60,6 +60,8 @@ void loop() {
 
     acenderLed(ultima);
 
+    delay(400);
+
     Serial.println(maisVotada);
     Serial.println(ultima);
 }
@@ -154,7 +156,7 @@ void acenderLed(String cor) {
             analogWrite(pinosVermelhos[j], 0);
         }
 
-        delay(100);
+        delay(400);
 
         for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); j++) {
             analogWrite(pinosVermelhos[j], 255);
@@ -164,7 +166,7 @@ void acenderLed(String cor) {
             analogWrite(pinosVerdes[j], 0);
         }
 
-        delay(100);
+        delay(400);
 
         for (int j = 0; j < sizeof(pinosVerdes) / sizeof(int); j++) {
             analogWrite(pinosVerdes[j], 255);
@@ -174,7 +176,7 @@ void acenderLed(String cor) {
             analogWrite(pinosAzuis[j], 0);
         }
 
-        delay(100);
+        delay(400);
 
         for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); j++) {
             analogWrite(pinosAzuis[j], 255);
