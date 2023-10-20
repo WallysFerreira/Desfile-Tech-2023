@@ -125,13 +125,13 @@ void loop() {
               if (ultimaMaisVotada != maisVotada) {
                 ultimaMaisVotada = maisVotada;
 
-                mudarCorPiramide(ultimaMaisVotada, 1);
+                mudarCorPiramide(ultimaMaisVotada, "mais");
               }
 
               if (ultimaVotada != ultima) {
                 ultima = ultimaVotada;
 
-                mudarCorPiramide(ultima, 2);
+                mudarCorPiramide(ultima, "ultima");
               }
             } else {
               Serial.println("Falha no parse JSON");
@@ -195,44 +195,37 @@ void loop() {
       delay(200);
 }
 
-void mudarCorPiramide(String cor, int qualPiramide) {
+void mudarCorPiramide(String cor, String qualCor) {
+  byte qual;
+
+  if (qualCor == "mais") qual = 0xA5;
+  if (qualCor == "ultima") qual = 0xA6;
+
   if (cor == "vermelho") {
-    mudarTodosLeds(0xFF, 0x00, 0x00, qualPiramide);
+    mudarTodosLeds(qual, 0xFF, 0x00, 0x00);
   } else if (cor == "verde") {
-    mudarTodosLeds(0x00, 0xFF, 0x00, qualPiramide);
+    mudarTodosLeds(qual, 0x00, 0xFF, 0x00);
   } else if (cor == "azul") {
-    mudarTodosLeds(0x00, 0x00, 0xFF, qualPiramide);
-  } else if (cor == "amarelo") {
-    mudarTodosLeds(0xFF, 0xFF, 0x00, qualPiramide);
-  } else if (cor == "magenta") {
-    mudarTodosLeds(0xFF, 0x00, 0xFF, qualPiramide);
-  } else if (cor == "ciano") {
-    mudarTodosLeds(0x00, 0xFF, 0xFF, qualPiramide); 
+    mudarTodosLeds(qual, 0x00, 0x00, 0xFF);
   }
 }
 
-void mudarTodosLeds(byte qntdVermelho, byte qntdVerde, byte qntdAzul, int qualPiramide) { 
-    byte data[] = {0xA5, qntdVermelho, qntdVerde, qntdAzul};
+void mudarTodosLeds(byte maisVotadaOuUltima, byte qntdVermelho, byte qntdVerde, byte qntdAzul) { 
+    byte data[] = {maisVotadaOuUltima, qntdVermelho, qntdVerde, qntdAzul};
 
-    switch (qualPiramide) {
-      case 1:
-        for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
-          Wire.beginTransmission(PIR1[i]);
-          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
-            Wire.write(data[i]);
-          }
-          Wire.endTransmission();
-        }
-        break;
-      case 2:
-        for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
-          Wire.beginTransmission(PIR2[i]);
-          for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
-            Wire.write(data[i]);
-          }
-          Wire.endTransmission();
-        }
-        break;
+    for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
+      Wire.beginTransmission(PIR1[i]);
+      for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+        Wire.write(data[j]);
+      }
+      Wire.endTransmission();
+    }
+    for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
+      Wire.beginTransmission(PIR2[i]);
+      for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+        Wire.write(data[j]);
+      }
+      Wire.endTransmission();
     }
 }
 
@@ -243,8 +236,8 @@ void mexerMotores(int anguloComeco, int anguloFinal, int qualPiramide) {
     case 1:
       for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
         Wire.beginTransmission(PIR1[i]);
-        for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
-            Wire.write(data[i]);
+        for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+            Wire.write(data[j]);
         }
         Wire.endTransmission();
       }
@@ -252,8 +245,8 @@ void mexerMotores(int anguloComeco, int anguloFinal, int qualPiramide) {
     case 2:
       for (int i = 0; i < sizeof(PIR2) / sizeof(byte); i++) {
         Wire.beginTransmission(PIR2[i]);
-        for (int i = 0; i < sizeof(data) / sizeof(byte); i++) {
-            Wire.write(data[i]);
+        for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+            Wire.write(data[j]);
         }
         Wire.endTransmission();
       }
