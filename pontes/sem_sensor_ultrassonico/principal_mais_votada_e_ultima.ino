@@ -95,10 +95,12 @@ void loop() {
               int qntdVerde = doc["verde"];
               String maisVotada;
               String ultimaVotada = doc["ultimo"];
+              bool statusLedsGrandes = doc["ledgrande"];
 
               Serial.printf("Vermelho: %d\n", qntdVermelho);
               Serial.printf("Verde: %d\n", qntdVerde);
               Serial.printf("Azul: %d\n", qntdAzul);
+              Serial.printf("Ultima: %s\n", ultimaVotada);
 
               if (qntdVermelho >= qntdVerde && qntdVermelho >= qntdAzul) {
                 maisVotada = "vermelho";
@@ -120,6 +122,12 @@ void loop() {
                 ultima = ultimaVotada;
 
                 mudarCorPiramide(ultima, "ultima");
+              }
+
+              if (statusLedsGrandes) {
+                ligarLedsGrandes();
+              } else {
+                desligarLedsGrandes();
               }
             } else {
               Serial.println("Falha no parse JSON");
@@ -189,9 +197,29 @@ void loop() {
 
     mexerMotores(ladoAleatorioComeco, ladoAleatorioFinal, 2);
 
-
-
     delay(1000);
+}
+
+void ligarLedsGrandes() {
+  byte data[] = {0xA7, 0xFF, 0x00, 0x00};
+  for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
+    Wire.beginTransmission(PIR1[i]);
+    for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+      Wire.write(data[j]);
+    }
+    Wire.endTransmission();
+  }
+}
+
+void desligarLedsGrandes() {
+  byte data[] = {0xA7, 0x00, 0x00, 0x00};
+  for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
+    Wire.beginTransmission(PIR1[i]);
+    for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
+      Wire.write(data[j]);
+    }
+    Wire.endTransmission();
+  }
 }
 
 void mudarCorPiramide(String cor, String qualCor) {
@@ -212,11 +240,16 @@ void mudarCorPiramide(String cor, String qualCor) {
 void mudarTodosLeds(byte qualCor, byte qntdVermelho, byte qntdVerde, byte qntdAzul) { 
     byte data[] = {qualCor, qntdVermelho, qntdVerde, qntdAzul};
 
-    Serial.println("enviando i2c");
+    Serial.print("enviando ");
+    Serial.print(qualCor, HEX);
+    Serial.print("qntdVermelho: ");
+    Serial.print(qntdVermelho);
+    Serial.print(" qntdVerde: ");
+    Serial.print(qntdVerde);
+    Serial.print(" qntdAzul: ");
+    Serial.println(qntdAzul);
 
     for (int i = 0; i < sizeof(PIR1) / sizeof(byte); i++) {
-      Serial.print("enviando para endereco ");
-      Serial.println(PIR1[i]);
       Wire.beginTransmission(PIR1[i]);
       for (int j = 0; j < sizeof(data) / sizeof(byte); j++) {
         Wire.write(data[j]);
@@ -234,8 +267,6 @@ void mudarTodosLeds(byte qualCor, byte qntdVermelho, byte qntdVerde, byte qntdAz
 
 void mexerMotores(int anguloComeco, int anguloFinal, int qualPiramide) {
   byte data[] = {0x05, anguloComeco, anguloFinal, 0x02};
-
-  Serial.println("enviando i2c");
   
   switch (qualPiramide) {
     case 1:
