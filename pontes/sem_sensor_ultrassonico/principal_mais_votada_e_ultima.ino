@@ -15,6 +15,8 @@ struct Credenciais {
 
 Credenciais networks[] = {
   {"SENAC-Mesh", "09080706"},
+  {"Senac-Mesh", "09080706"},
+  {"Galaxy M12B6B3", "novecentosenove"},
   {"Vivo-Internet-E532", "6EFC366C"},
   {"AP1501", "ARBBBE11"},
   {"iPhone de Arnott", "arbbbe11"},
