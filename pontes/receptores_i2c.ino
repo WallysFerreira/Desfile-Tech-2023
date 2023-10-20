@@ -2,7 +2,7 @@
 #include "base.hpp"
 
 // Mudar conforme a linha onde o arduino for colocado, de cima para baixo
-#define MINHA_LINHA 0x01
+#define MINHA_LINHA 0x04
 
 // Mudar confome a quantidade de motores na linha
 #define MOTOR1 3
@@ -51,8 +51,8 @@ byte parametro1;
 byte parametro2;
 byte parametro3;
 
-String maisVotada = "teste";
-String ultima = "teste denovo";
+String maisVotada = "";
+String ultima = "";
 
 void loop() {
     // Alternar entre mais votada e ultima usando fade
@@ -62,7 +62,9 @@ void loop() {
 
     delay(400);
 
+    Serial.print("maisVotada: ");
     Serial.println(maisVotada);
+    Serial.print("ultima: ");
     Serial.println(ultima);
 }
 
@@ -86,8 +88,6 @@ void eventoReceber(int _) {
     if (parametro2 == 0xF2) parametro2 = 90;
     if (parametro2 == 0xF3) parametro2 = 180;
 
-    Serial.println(parametro1);
-    Serial.println(parametro2);
     switch (oqueMudar) {
         case 0x01:
             mexerMotor(m1, parametro1, parametro2, parametro3);
@@ -130,6 +130,9 @@ void eventoReceber(int _) {
             if (parametro1 == 0xFF) ultima = "vermelho";
             if (parametro2 == 0xFF) ultima = "verde";
             if (parametro3 == 0xFF) ultima = "azul";
+            break;
+        case 0xA7:
+            if (parametro1 == 0xFF);
     }
 }
 
@@ -161,6 +164,8 @@ void acenderLed(String cor) {
         for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); j++) {
             analogWrite(pinosVermelhos[j], 255);
         }
+
+        delay(400);
     } else if (cor == "verde") {
         for (int j = 0; j < sizeof(pinosVerdes) / sizeof(int); j++) {
             analogWrite(pinosVerdes[j], 0);
@@ -171,6 +176,8 @@ void acenderLed(String cor) {
         for (int j = 0; j < sizeof(pinosVerdes) / sizeof(int); j++) {
             analogWrite(pinosVerdes[j], 255);
         }
+
+        delay(400);
     } else if (cor == "azul") {
         for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); j++) {
             analogWrite(pinosAzuis[j], 0);
@@ -181,5 +188,7 @@ void acenderLed(String cor) {
         for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); j++) {
             analogWrite(pinosAzuis[j], 255);
         }
+
+        delay(400);
     }
 }
