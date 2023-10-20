@@ -265,6 +265,7 @@ void mudarTodosLeds(byte qualCor, byte qntdVermelho, byte qntdVerde, byte qntdAz
     }
 }
 
+
 void mexerMotores(int anguloComeco, int anguloFinal, int qualPiramide) {
   byte data[] = {0x05, anguloComeco, anguloFinal, 0x02};
   

@@ -2,7 +2,7 @@
 #include "base.hpp"
 
 // Mudar conforme a linha onde o arduino for colocado, de cima para baixo
-#define MINHA_LINHA 0x04
+#define MINHA_LINHA 0x06
 
 // Mudar confome a quantidade de motores na linha
 #define MOTOR1 3
@@ -60,8 +60,6 @@ void loop() {
 
     acenderLed(ultima);
 
-    delay(400);
-
     Serial.print("maisVotada: ");
     Serial.println(maisVotada);
     Serial.print("ultima: ");
@@ -112,7 +110,7 @@ void eventoReceber(int _) {
             mudarLuz(parametro1, parametro2, parametro3);
             break;
         case 0xA2:
-            mudarLuz(parametro1, parametro2, parametro3);
+            mudarLuz(parametro1, parametro2, parametro3); 
             break;
         case 0xA3:
             mudarLuz(parametro1, parametro2, parametro3);
@@ -130,31 +128,31 @@ void eventoReceber(int _) {
             if (parametro1 == 0xFF) ultima = "vermelho";
             if (parametro2 == 0xFF) ultima = "verde";
             if (parametro3 == 0xFF) ultima = "azul";
-            break;
+            break;/*
         case 0xA7:
-            if (parametro1 == 0xFF);
+            if (parametro1 == 0xFF) analogWrite(10, 0);
+            if (parametro1 == 0x00) analogWrite(10, 255);*/
     }
 }
 
 void colocarTodosLedsHigh() {
-    analogWrite(VERMELHO1, HIGH);
-    analogWrite(VERMELHO2, HIGH);
-    analogWrite(VERMELHO3, HIGH);
-    analogWrite(VERMELHO4, HIGH);
-    analogWrite(VERDE1, HIGH);
-    analogWrite(VERDE2, HIGH);
-    analogWrite(VERDE3, HIGH);
-    analogWrite(VERDE4, HIGH);
-    analogWrite(AZUL1, HIGH);
-    analogWrite(AZUL2, HIGH);
-    analogWrite(AZUL3, HIGH);
-    analogWrite(AZUL4, HIGH);
+    analogWrite(VERMELHO1, 255);
+    analogWrite(VERMELHO2, 255);
+    analogWrite(VERMELHO3, 255);
+    analogWrite(VERMELHO4, 255);
+    analogWrite(VERDE1, 255);
+    analogWrite(VERDE2, 255);
+    analogWrite(VERDE3, 255);
+    analogWrite(VERDE4, 255);
+    analogWrite(AZUL1, 255);
+    analogWrite(AZUL2, 255);
+    analogWrite(AZUL3, 255);
+    analogWrite(AZUL4, 255);
 }
 
-void acenderLed(String cor) {
-    colocarTodosLedsHigh();
-    
+void acenderLed(String cor) {    
     if (cor == "vermelho") {
+      Serial.println("ligando leds vermelhos");
         for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); j++) {
             analogWrite(pinosVermelhos[j], 0);
         }
@@ -179,6 +177,7 @@ void acenderLed(String cor) {
 
         delay(400);
     } else if (cor == "azul") {
+
         for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); j++) {
             analogWrite(pinosAzuis[j], 0);
         }
