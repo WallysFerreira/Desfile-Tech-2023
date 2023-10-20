@@ -56,9 +56,9 @@ String ultima = "teste denovo";
 
 void loop() {
     // Alternar entre mais votada e ultima usando fade
-    fade(maisVotada);
+    acenderLed(maisVotada);
 
-    fade(ultima);
+    acenderLed(ultima);
 
     Serial.println(maisVotada);
     Serial.println(ultima);
@@ -146,60 +146,38 @@ void colocarTodosLedsHigh() {
     analogWrite(AZUL4, HIGH);
 }
 
-void fade(String cor) {
+void acenderLed(String cor) {
     colocarTodosLedsHigh();
     
     if (cor == "vermelho") {
-        for (int i = 0; i <= 60; i++) {
-            for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); i++) {
-                analogWrite(pinosVermelhos[j], logFade(i));
-            }
-
-            delay(30);
+        for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); j++) {
+            analogWrite(pinosVermelhos[j], 0);
         }
 
-        for (int i = 60; i >= 0; i--) {
-            for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); i++) {
-                analogWrite(pinosVermelhos[i], logFade(i));
-            }
+        delay(100);
 
-            delay(30);
+        for (int j = 0; j < sizeof(pinosVermelhos) / sizeof(int); j++) {
+            analogWrite(pinosVermelhos[j], 255);
         }
     } else if (cor == "verde") {
-        for (int i = 0; i <= 60; i++) {
-            for (int j = 0; j < sizeof(pinosVerdes) / sizeof(int); i++) {
-                analogWrite(pinosVerdes[j], logFade(i));
-            }
-
-            delay(30);
+        for (int j = 0; j < sizeof(pinosVerdes) / sizeof(int); j++) {
+            analogWrite(pinosVerdes[j], 0);
         }
 
-        for (int i = 60; i >= 0; i--) {
-            for (int j = 0; j < sizeof(pinosVerdes) / sizeof(int); i++) {
-                analogWrite(pinosVerdes[i], logFade(i));
-            }
+        delay(100);
 
-            delay(30);
+        for (int j = 0; j < sizeof(pinosVerdes) / sizeof(int); j++) {
+            analogWrite(pinosVerdes[j], 255);
         }
     } else if (cor == "azul") {
-        for (int i = 0; i <= 60; i++) {
-            for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); i++) {
-                analogWrite(pinosAzuis[j], logFade(i));
-            }
-
-            delay(30);
+        for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); j++) {
+            analogWrite(pinosAzuis[j], 0);
         }
 
-        for (int i = 60; i >= 0; i--) {
-            for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); i++) {
-                analogWrite(pinosAzuis[i], logFade(i));
-            }
+        delay(100);
 
-            delay(30);
+        for (int j = 0; j < sizeof(pinosAzuis) / sizeof(int); j++) {
+            analogWrite(pinosAzuis[j], 255);
         }
     }
-}
-
-int logFade(double value) {
-    return (int)(255.0 * (log10(1 + 9 * (value / 100.0))));
 }
